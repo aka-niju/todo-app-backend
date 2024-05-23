@@ -68,5 +68,16 @@ async function handleDeleteTask(req, res, next) {
     }
 }
 
+async function getAllTasks(req, res, next) {
+    try {
+        const tasks = await Task.find({});
+        return res.status(200).json({
+            success: true,
+            tasks
+        })
+    } catch (error) {
+        next(error)
+    }
+}
 
-module.exports = { handleNewTask, getMyTasks, handleUpdateTask, handleDeleteTask }
+module.exports = { handleNewTask, getMyTasks, handleUpdateTask, handleDeleteTask, getAllTasks }

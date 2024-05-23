@@ -45,7 +45,7 @@ async function handleUserLogin(req, res, next) {
     }
 }
 
-async function handleUserLogout(req, res) {
+async function handleUserLogout(req, res, next) {
     try {
         return res.status(200).cookie("token", "", {
             httpOnly: true,
@@ -57,22 +57,34 @@ async function handleUserLogout(req, res) {
             message: "User logged out successfully",
             user: req.user
         })
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        next(error);
     }
 }
 
-async function getMyProfile(req, res) {
+async function getMyProfile(req, res, next) {
     try {
         return res.status(200).json({
             success: true,
             user: req.user
         })
-    } catch (e) {
-        console.log(e);
+    } catch (error) {
+        next(error);
+    }
+}
+
+async function getAllUsers(req, res){
+    try{
+    const users = await User.find({});
+    return res.status(200).json({
+        success: true,
+        users
+    })
+    }catch(error){
+        next(error)
     }
 }
 
 
 
-module.exports = { handleUserRegister, handleUserLogin, handleUserLogout, getMyProfile };
+module.exports = { handleUserRegister, handleUserLogin, handleUserLogout, getMyProfile, getAllUsers };
